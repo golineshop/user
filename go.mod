@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/golang/protobuf v1.5.2
+	github.com/jinzhu/gorm v1.9.16
 	github.com/micro/go-micro/v2 v2.9.1
 	github.com/micro/micro/v3 v3.16.0
 )
@@ -21,6 +22,7 @@ require (
 	github.com/hashicorp/go-version v1.2.1 // indirect
 	github.com/hpcloud/tail v1.0.0 // indirect
 	github.com/improbable-eng/grpc-web v0.13.0 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/miekg/dns v1.1.27 // indirect
 	github.com/nightlyone/lockfile v1.0.0 // indirect
 	github.com/opentracing/opentracing-go v1.2.0 // indirect

@@ -4,15 +4,15 @@ import (
 	"context"
 	"github.com/golineshop/user/domain/model"
 	"github.com/golineshop/user/domain/service"
-	user "github.com/golineshop/user/proto/user"
+	proto "github.com/golineshop/user/proto/user"
 )
 
 type UserController struct {
-	UserService service.UserService
+	UserService service.IUserService
 }
 
 // Register 注册
-func (u *UserController) Register(ctx context.Context, userRegisterRequest *user.UserRegisterRequest, userRegisterResponse *user.UserRegisterResponse) error {
+func (u *UserController) Register(ctx context.Context, userRegisterRequest *proto.UserRegisterRequest, userRegisterResponse *proto.UserRegisterResponse) error {
 	userModel := &model.User{
 		UserName:     userRegisterRequest.UserName,
 		FirstName:    userRegisterRequest.FirstName,
@@ -27,7 +27,7 @@ func (u *UserController) Register(ctx context.Context, userRegisterRequest *user
 }
 
 // Login 登陆
-func (u *UserController) Login(ctx context.Context, userLoginRequest *user.UserLoginRequest, userLoginResponse *user.UserLoginResponse) error {
+func (u *UserController) Login(ctx context.Context, userLoginRequest *proto.UserLoginRequest, userLoginResponse *proto.UserLoginResponse) error {
 	isOk, err := u.UserService.CheckPwd(userLoginRequest.UserName, userLoginRequest.Pwd)
 	if err != nil {
 		return err
@@ -37,7 +37,7 @@ func (u *UserController) Login(ctx context.Context, userLoginRequest *user.UserL
 }
 
 // GetUserInfo 获取用户信息
-func (u *UserController) GetUserInfo(ctx context.Context, userInfoRequest *user.UserInfoRequest, userInfoResponse *user.UserInfoResponse) error {
+func (u *UserController) GetUserInfo(ctx context.Context, userInfoRequest *proto.UserInfoRequest, userInfoResponse *proto.UserInfoResponse) error {
 	userModel, err := u.UserService.FindUserByName(userInfoRequest.UserName)
 	if err != nil {
 		return err
@@ -47,8 +47,8 @@ func (u *UserController) GetUserInfo(ctx context.Context, userInfoRequest *user.
 }
 
 // UserForResponse 类型转化
-func userToResponse(userModel *model.User) *user.UserInfoResponse {
-	response := &user.UserInfoResponse{}
+func userToResponse(userModel *model.User) *proto.UserInfoResponse {
+	response := &proto.UserInfoResponse{}
 	response.UserName = userModel.UserName
 	response.FirstName = userModel.FirstName
 	response.UserId = userModel.ID

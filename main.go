@@ -20,7 +20,7 @@ func main() {
 	// 初始化服务
 	microService.Init()
 	// 创建数据库连接
-	db, err := gorm.Open("mysql", "root:123456@/micro?charset=utf8&parseTime=True&loc=Local")
+	db, err := gorm.Open("mysql", "root:bowen0216@/micro?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -34,8 +34,8 @@ func main() {
 	// 使用单数表名
 	db.SingularTable(true)
 	// 只执行一次，数据表初始化
-	//repository := repository.NewUserRepository(db)
-	//repository.InitTable()
+	//rp := repository.NewUserRepository(db)
+	//rp.InitTable()
 	// 创建服务实例
 	userService := service.NewUserService(repository.NewUserRepository(db))
 	// 注册Handler

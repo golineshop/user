@@ -7,6 +7,7 @@ import (
 	"github.com/golineshop/user/handler"
 	proto "github.com/golineshop/user/proto/user"
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/micro/go-micro/v2"
 )
 

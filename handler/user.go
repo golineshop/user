@@ -2,52 +2,55 @@ package handler
 
 import (
 	"context"
-
-	log "github.com/micro/micro/v3/service/logger"
-
-	user "user/proto"
+	"github.com/golineshop/user/domain/model"
+	"github.com/golineshop/user/domain/service"
+	user "github.com/golineshop/user/proto/user"
 )
 
-type User struct{}
-
-// Return a new handler
-func New() *User {
-	return &User{}
+type UserController struct {
+	UserService service.UserService
 }
 
-// Call is a single request handler called via client.Call or the generated client code
-func (e *User) Call(ctx context.Context, req *user.Request, rsp *user.Response) error {
-	log.Info("Received User.Call request")
-	rsp.Msg = "Hello " + req.Name
+// Register 注册
+func (u *UserController) Register(ctx context.Context, userRegisterRequest *user.UserRegisterRequest, userRegisterResponse *user.UserRegisterResponse) error {
+	userModel := &model.User{
+		UserName:     userRegisterRequest.UserName,
+		FirstName:    userRegisterRequest.FirstName,
+		HashPassword: userRegisterRequest.Pwd,
+	}
+	_, err := u.UserService.AddUser(userModel)
+	if err != nil {
+		return err
+	}
+	userRegisterResponse.Message = "添加成功"
 	return nil
 }
 
-// Stream is a server side stream handler called via client.Stream or the generated client code
-func (e *User) Stream(ctx context.Context, req *user.StreamingRequest, stream user.User_StreamStream) error {
-	log.Infof("Received User.Stream request with count: %d", req.Count)
-
-	for i := 0; i < int(req.Count); i++ {
-		log.Infof("Responding: %d", i)
-		if err := stream.Send(&user.StreamingResponse{
-			Count: int64(i),
-		}); err != nil {
-			return err
-		}
+// Login 登陆
+func (u *UserController) Login(ctx context.Context, userLoginRequest *user.UserLoginRequest, userLoginResponse *user.UserLoginResponse) error {
+	isOk, err := u.UserService.CheckPwd(userLoginRequest.UserName, userLoginRequest.Pwd)
+	if err != nil {
+		return err
 	}
-
+	userLoginResponse.IsSuccess = isOk
 	return nil
 }
 
-// PingPong is a bidirectional stream handler called via client.Stream or the generated client code
-func (e *User) PingPong(ctx context.Context, stream user.User_PingPongStream) error {
-	for {
-		req, err := stream.Recv()
-		if err != nil {
-			return err
-		}
-		log.Infof("Got ping %v", req.Stroke)
-		if err := stream.Send(&user.Pong{Stroke: req.Stroke}); err != nil {
-			return err
-		}
+// GetUserInfo 获取用户信息
+func (u *UserController) GetUserInfo(ctx context.Context, userInfoRequest *user.UserInfoRequest, userInfoResponse *user.UserInfoResponse) error {
+	userModel, err := u.UserService.FindUserByName(userInfoRequest.UserName)
+	if err != nil {
+		return err
 	}
+	userInfoResponse = userToResponse(userModel)
+	return nil
+}
+
+// UserForResponse 类型转化
+func userToResponse(userModel *model.User) *user.UserInfoResponse {
+	response := &user.UserInfoResponse{}
+	response.UserName = userModel.UserName
+	response.FirstName = userModel.FirstName
+	response.UserId = userModel.ID
+	return response
 }

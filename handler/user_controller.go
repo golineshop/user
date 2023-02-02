@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/golineshop/user/domain/model"
 	"github.com/golineshop/user/domain/service"
-	proto "github.com/golineshop/user/proto/user"
+	"github.com/golineshop/user/proto"
 )
 
 type UserController struct {

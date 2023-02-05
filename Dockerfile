@@ -1,3 +1,3 @@
 FROM alpine
-ADD user /user
+ADD user_linux /user
 ENTRYPOINT [ "/user" ]

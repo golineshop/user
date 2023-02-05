@@ -14,7 +14,7 @@ import (
 func main() {
 	// 服务参数设置
 	microService := micro.NewService(
-		micro.Name("go.micro.service.proto"),
+		micro.Name("go.micro.service.user"),
 		micro.Version("latest"),
 	)
 	// 初始化服务

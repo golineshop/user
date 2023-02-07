@@ -5,7 +5,7 @@ import (
 	"github.com/golineshop/user/domain/repository"
 	"github.com/golineshop/user/domain/service"
 	"github.com/golineshop/user/handler"
-	"github.com/golineshop/user/proto"
+	proto "github.com/golineshop/user/proto"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/micro/go-micro/v2"
